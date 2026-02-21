@@ -93,7 +93,7 @@ local function createUI()
         ["WACK SHOP"] = {
             ["🔍 มองทะลุผู้เล่น"] = "https://pastebin.com/raw/ZkLhNuDL",
             ["💴 เสกเงิน"] = "https://raw.githubusercontent.com/wackshopr-tech/script-map/refs/heads/main/PS%20CITY/moneystamp.lua",
-            ["💀 ฆ่าทุกคน"] = "https://raw.githubusercontent.com/wackshopr-tech/script-map/refs/heads/main/PS%20CITY/moneystamp.lua",
+            ["💀 ฆ่าทุกคน"] = "https://raw.githubusercontent.com/wackshopr-tech/script-map/refs/heads/main/PS%20CITY/KILL-ALL.lua",
         }
     }
     local yOffset = 0
