@@ -92,7 +92,8 @@ local function createUI()
     local functionCategories = {
         ["WACK SHOP"] = {
             ["🔍 มองทะลุผู้เล่น"] = "https://pastebin.com/raw/ZkLhNuDL",
-            ["🤖 ESP BOT,NPC"] = "https://pastebin.com/raw/q26QuUBF"
+            ["💴 เสกเงิน"] = "https://raw.githubusercontent.com/wackshopr-tech/script-map/refs/heads/main/PS%20CITY/moneystamp.lua",
+            ["💀 ฆ่าทุกคน"] = "https://raw.githubusercontent.com/wackshopr-tech/script-map/refs/heads/main/PS%20CITY/moneystamp.lua",
         }
     }
     local yOffset = 0
