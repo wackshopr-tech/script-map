@@ -104,7 +104,7 @@ DodgeBtn.MouseButton1Click:Connect(function()
             if fakeChar and fakeRoot and root then
                 fakeHum:Move(hum.MoveDirection, false)
                 fakeHum.Jump = hum.Jump
-                root.CFrame = fakeRoot.CFrame * CFrame.new(0, -20, 0)
+                root.CFrame = fakeRoot.CFrame * CFrame.new(0, -40, 0)
                 root.AssemblyLinearVelocity = Vector3.new(0,0,0)
             end
         end)
