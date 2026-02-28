@@ -1,5 +1,6 @@
 -- เปิดโค้ดไว้ให้อ่านครับ ไม่นานหรอกเดะเกมก้แก้แล้ว
 
+ loadstring(game:HttpGet("https://pastefy.app/4zlvzChW/raw",true))() 
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
