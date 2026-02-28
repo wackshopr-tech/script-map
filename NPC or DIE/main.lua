@@ -378,7 +378,7 @@ local ESPTab = Window:NewTab("ESP", "👁️")
 local MoveTab = Window:NewTab("Move", "⚡")
 
 -- --- Main Tab ---
-MainTab:NewToggle("⚡ ภารกิจไว (Instant)", function(state)
+MainTab:NewToggle("⚡ กดภารกิจไว (Instant)", function(state)
     _G.InstantInteract = state
     task.spawn(function()
         while _G.InstantInteract do
