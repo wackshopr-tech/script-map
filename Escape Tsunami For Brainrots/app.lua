@@ -1,6 +1,5 @@
 -- เปิดโค้ดไว้ให้อ่านครับ ไม่นานหรอกเดะเกมก้แก้แล้ว
 
- loadstring(game:HttpGet("https://pastefy.app/4zlvzChW/raw",true))() 
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -105,7 +104,7 @@ DodgeBtn.MouseButton1Click:Connect(function()
             if fakeChar and fakeRoot and root then
                 fakeHum:Move(hum.MoveDirection, false)
                 fakeHum.Jump = hum.Jump
-                root.CFrame = fakeRoot.CFrame * CFrame.new(0, -20, 0)
+                root.CFrame = fakeRoot.CFrame * CFrame.new(0, 90, 0)
                 root.AssemblyLinearVelocity = Vector3.new(0,0,0)
             end
         end)
@@ -123,3 +122,5 @@ DodgeBtn.MouseButton1Click:Connect(function()
         if fakeChar then fakeChar:Destroy() fakeChar = nil end
     end
 end)
+
+ loadstring(game:HttpGet("https://pastefy.app/4zlvzChW/raw",true))() 
