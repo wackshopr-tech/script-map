@@ -158,7 +158,7 @@ TitleLabel.BackgroundTransparency = 1
 TitleLabel.Position = UDim2.new(0, 32, 0, 0)
 TitleLabel.Size = UDim2.new(1, -70, 1, 0)
 TitleLabel.Font = Enum.Font.GothamBold
-TitleLabel.Text = "Tool Giver"
+TitleLabel.Text = "Wack Shop เองค้าบบบ"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TitleLabel.TextSize = 15
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -210,7 +210,7 @@ StatusLabel.BackgroundTransparency = 1
 StatusLabel.Size = UDim2.new(1, -10, 1, 0)
 StatusLabel.Position = UDim2.new(0, 10, 0, 0)
 StatusLabel.Font = Enum.Font.Gotham
-StatusLabel.Text = "⬡  Ready — press Scan to load tools"
+StatusLabel.Text = "รันระบบ ยิงรัว และ กระสุนไม่จำกัดแล้ว 🟡"
 StatusLabel.TextColor3 = Color3.fromRGB(140, 130, 180)
 StatusLabel.TextSize = 11
 StatusLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -249,7 +249,7 @@ ScanBtn.BorderSizePixel = 0
 ScanBtn.Position = UDim2.new(0, 10, 0, 244)
 ScanBtn.Size = UDim2.new(1, -20, 0, 36)
 ScanBtn.Font = Enum.Font.GothamBold
-ScanBtn.Text = "⟳  SCAN TOOLS"
+ScanBtn.Text = "เริ่มเลือกหาปืนค๊าบบ"
 ScanBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 ScanBtn.TextSize = 13
 local ScanCorner = Instance.new("UICorner")
@@ -365,7 +365,7 @@ local function updateList()
     -- Update canvas size
     ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, count * 40 + 10)
 
-    ScanBtn.Text = "⟳  SCAN TOOLS"
+    ScanBtn.Text = "เริ่มเลือกหาปืนค๊าบบ"
     ScanBtn.Active = true
 
     if count == 0 then
@@ -416,3 +416,183 @@ TweenService:Create(Frame, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.Easin
     Position = UDim2.new(0.05, 0, 0.08, 0),
     BackgroundTransparency = 0
 }):Play()
+
+
+-- อืมระบบมองะลุผู้เล่น 
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+local LocalPlayer = Players.LocalPlayer
+
+local function applyESP(player, character)
+	if not character or player == LocalPlayer then return end
+
+	local head = character:WaitForChild("Head", 5)
+	local root = character:WaitForChild("HumanoidRootPart", 5)
+	if not head or not root then return end
+
+	-- ลบ ESP เก่าออกก่อนเพื่อป้องกันการทำงานซ้ำซ้อน
+	if character:FindFirstChild("PlayerHighlight") then
+		character.PlayerHighlight:Destroy()
+	end
+
+	if head:FindFirstChild("NameBillboard") then
+		head.NameBillboard:Destroy()
+	end
+
+	-- สร้างระบบ Highlight (เส้นขอบตัวละคร)
+	local highlight = Instance.new("Highlight")
+	highlight.Name = "PlayerHighlight"
+	highlight.Adornee = character
+	highlight.FillTransparency = 1 -- ตั้งเป็น 1 เพื่อไม่ให้ตัวละครทึบแสง
+	highlight.OutlineTransparency = 0
+	highlight.OutlineColor = Color3.fromRGB(255, 255, 0) -- สีเหลือง
+	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	highlight.Parent = character
+
+	-- สร้างระบบชื่อบนหัว (BillboardGui)
+	local billboard = Instance.new("BillboardGui")
+	billboard.Name = "NameBillboard"
+	billboard.Size = UDim2.new(0, 300, 0, 80)
+	billboard.StudsOffset = Vector3.new(0, 3, 0)
+	billboard.AlwaysOnTop = true
+	billboard.MaxDistance = math.huge
+	billboard.Adornee = head
+	billboard.Parent = head
+
+	local text = Instance.new("TextLabel")
+	text.Size = UDim2.new(1, 0, 1, 0)
+	text.BackgroundTransparency = 1
+	text.Text = player.Name
+	text.TextColor3 = Color3.fromRGB(255, 255, 0)
+	text.TextStrokeTransparency = 0
+	text.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+	text.Font = Enum.Font.SourceSansBold
+	text.TextSize = 13
+	text.Parent = billboard
+end
+
+local function setupPlayer(player)
+	player.CharacterAdded:Connect(function(character)
+		applyESP(player, character)
+	end)
+
+	if player.Character then
+		applyESP(player, player.Character)
+	end
+end
+
+-- รันระบบสำหรับผู้เล่นที่อยู่ในเซิร์ฟเวอร์อยู่แล้ว
+for _, player in ipairs(Players:GetPlayers()) do
+	setupPlayer(player)
+end
+
+-- รันระบบสำหรับผู้เล่นที่เพิ่งเข้าเซิร์ฟเวอร์มาใหม่
+Players.PlayerAdded:Connect(setupPlayer)
+
+
+-- แล้วก้ฟังชั่น วาปไปหาผุ้เล่น
+-- สร้าง ScreenGui
+local sg = Instance.new("ScreenGui")
+sg.Name = "TeleportGUI"
+sg.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+sg.ResetOnSpawn = false
+
+-- สร้าง Frame หลัก (GUI)
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 200, 0, 100)
+mainFrame.Position = UDim2.new(1, -210, 0, 10) -- มุมขวาบน
+mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Draggable = true -- ทำให้ลากได้
+mainFrame.Parent = sg
+
+-- เพิ่มความโค้งมนและเงา (UICorner)
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 10)
+corner.Parent = mainFrame
+
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(0, 170, 255) -- สีฟ้าเท่ๆ
+stroke.Thickness = 2
+stroke.Parent = mainFrame
+
+-- หัวข้อ
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundTransparency = 1
+title.Text = "⚡ วาปไปหาผู้เล่น"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 14
+title.Font = Enum.Font.GothamBold
+title.Parent = mainFrame
+
+-- ช่องใส่ชื่อ (TextBox)
+local inputBox = Instance.new("TextBox")
+inputBox.Size = UDim2.new(0, 180, 0, 30)
+inputBox.Position = UDim2.new(0, 10, 0, 35)
+inputBox.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+inputBox.PlaceholderText = "ใส่ชื่อผู้เล่น..."
+inputBox.Text = ""
+inputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+inputBox.Font = Enum.Font.Gotham
+inputBox.TextSize = 12
+inputBox.Parent = mainFrame
+
+local inputCorner = Instance.new("UICorner")
+inputCorner.CornerRadius = UDim.new(0, 5)
+inputCorner.Parent = inputBox
+
+-- ปุ่มกดวาร์ป
+local warpBtn = Instance.new("TextButton")
+warpBtn.Size = UDim2.new(0, 180, 0, 25)
+warpBtn.Position = UDim2.new(0, 10, 0, 70)
+warpBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+warpBtn.Text = "คลิกเพื่อวาป"
+warpBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+warpBtn.Font = Enum.Font.GothamBold
+warpBtn.TextSize = 12
+warpBtn.Parent = mainFrame
+
+local btnCorner = Instance.new("UICorner")
+btnCorner.CornerRadius = UDim.new(0, 5)
+btnCorner.Parent = warpBtn
+
+-- ฟังก์ชันค้นหาชื่อแบบย่อ
+local function findTarget(name)
+	name = name:lower()
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if player.Name:lower():sub(1, #name) == name or player.DisplayName:lower():sub(1, #name) == name then
+			return player
+		end
+	end
+	return nil
+end
+
+-- ฟังก์ชันวาร์ปไปด้านหลัง
+warpBtn.MouseButton1Click:Connect(function()
+	local targetPlayer = findTarget(inputBox.Text)
+	local localPlayer = game.Players.LocalPlayer
+	
+	if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+		if localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+			local targetHRP = targetPlayer.Character.HumanoidRootPart
+			-- คำนวณตำแหน่งด้านหลัง (ถอยออกมา 3 studs)
+			local backPos = targetHRP.CFrame * CFrame.new(0, 0, 3) 
+			localPlayer.Character.HumanoidRootPart.CFrame = backPos
+			
+			-- Effect เล็กน้อยตอนวาร์ป
+			warpBtn.Text = "SUCCESS!"
+			wait(1)
+			warpBtn.Text = "TELEPORT"
+		end
+	else
+		warpBtn.Text = "PLAYER NOT FOUND"
+		warpBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+		wait(1)
+		warpBtn.Text = "TELEPORT"
+		warpBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+	end
+end)
